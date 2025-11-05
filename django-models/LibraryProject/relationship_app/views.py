@@ -7,6 +7,7 @@ def list_books(request):
     book = Book.objects.all()
     return render(request, 'relationship_app/list_books.html')
 
-def library_detail(request):
-    library = Library.objects.all()
-    return render(request, 'relationship_app/library_detail.html')
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = 'relationship_app/library_detail.html'
+    context_object_name = 'library'
