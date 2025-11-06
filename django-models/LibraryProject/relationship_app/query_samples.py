@@ -1,7 +1,7 @@
 from models import Book, Author, Library, Librarian
 
-author  = Author.objects.get(name =author_name)
-books_by_author = Book.objects.filter(author=author)
+author_name  = Author.objects.get(name =author_name)
+books_by_author = Book.objects.filter(author=author_name)
 
 books = Library.books.all()
 
