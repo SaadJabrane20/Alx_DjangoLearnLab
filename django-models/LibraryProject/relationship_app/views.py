@@ -7,7 +7,7 @@ from .models import Library
 from django.views.generic import ListView, CreateView
 from django.views.generic.detail import DetailView
 from .models import UserProfile
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 def list_books(request):
     books = Book.objects.all()
@@ -35,22 +35,16 @@ def register(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 @login_required
+@user_passes_test(lambda u: u.userprofile.role == 'Admin')
 def admin_view(request):
-    if request.user.userprofile.role != 'Admin':
-        return redirect('login')  # Redirect non-admin users to login or another appropriate page
-    else:
-        return render(request, 'relationship_app/admin_view.html')
+    return render(request, 'relationship_app/admin_view.html')
     
 @login_required
-def member_view(request):
-    if request.user.userprofile.role != 'Member':
-        return redirect('login')  
-    else:
-        return render(request, 'relationship_app/member_view.html')
-    
-@login_required
+@user_passes_test(lambda u: u.userprofile.role == 'Librarian')
 def librarian_view(request):
-    if request.user.userprofile.role != 'Librarian':
-        return redirect('login')  
-    else:
-        return render(request, 'relationship_app/librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
+
+@login_required
+@user_passes_test(lambda u: u.userprofile.role == 'Member')
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
