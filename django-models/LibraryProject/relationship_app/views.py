@@ -7,7 +7,7 @@ from .models import Library
 from django.views.generic import ListView, CreateView
 from django.views.generic.detail import DetailView
 from .models import UserProfile
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 # Create your views here.
 def list_books(request):
     books = Book.objects.all()
@@ -48,3 +48,15 @@ def librarian_view(request):
 @user_passes_test(lambda u: u.userprofile.role == 'Member')
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def can_add_book(request):
+    pass
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def can_change_book(request):
+    pass
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def can_delete_book(request):
+    pass
