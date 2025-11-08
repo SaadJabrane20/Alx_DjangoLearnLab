@@ -7,7 +7,8 @@ from .models import Library
 from django.views.generic import ListView, CreateView
 from django.views.generic.detail import DetailView
 from .models import UserProfile
-from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import permission_required
 # Create your views here.
 def list_books(request):
     books = Book.objects.all()
