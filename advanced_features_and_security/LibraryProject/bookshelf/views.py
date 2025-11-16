@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Book
 from django.contrib.auth.decorators import permission_required
 from .forms import ExampleForm
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -9,3 +10,8 @@ from .forms import ExampleForm
 def book_list(request):
     books = Book.objects.all()
     return render(request,'bookshelf/book_list.html',{'books' : books})
+
+# bookshelf/views.py
+
+def test_view(request):
+    return HttpResponse("Hello World")

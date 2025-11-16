@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-iqsqxi1hb@ut#hzwr26ac3b*!z_o++%30s5+=+0s-ojjkn1@7$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    'localhost',
+]
 
 
 # Application definition
@@ -56,16 +59,19 @@ MIDDLEWARE = [
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 #CSP Implementation
-CSP_DEFAULT_SRC = ("'self'",)          
-CSP_SCRIPT_SRC = ("'self'", "https://trusted-scripts.com")  
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")  
-CSP_IMG_SRC = ("'self'", "data:") 
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")
-CSP_CONNECT_SRC = ("'self'",)
-
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        'default-src': ("'self'",),
+        'script-src': ("'self'", "https://trusted-scripts.com"),
+        'style-src': ("'self'", "https://fonts.googleapis.com"),
+        'img-src': ("'self'", "data:"),
+        'font-src': ("'self'", "https://fonts.gstatic.com"),
+        'connect-src': ("'self'",),
+    }
+}
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
