@@ -5,6 +5,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
     publication_year = models.IntegerField(default=2000)
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, date_of_birth=None, **extra_fields):
         if not email:
@@ -19,6 +20,7 @@ class CustomUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+    
     def create_superuser(self, username, email, password=None, date_of_birth=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -32,9 +34,16 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(username, email, password, date_of_birth, **extra_fields)
 
 class CustomUser(AbstractUser):
-    date_of_birth = models.DateField()
-    profile_photo = models.ImageField()
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
 
+    class Meta:
+        permissions = [
+            ("can_view", "Can view"),
+            ("can_create", "Can create"),
+            ("can_delete", "Can delete"),
+            ("can_edit", "Can edit")
+        ]
     objects = CustomUserManager()
 
     def __str__(self):
