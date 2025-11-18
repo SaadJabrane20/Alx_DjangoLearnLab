@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics, viewsets
 from .serializers import BookSerializer
 from .models import Book
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.permissions import IsAuthenticated, IsAdminUser,IsAuthenticatedOrReadOnly
 # Create your views here.
 class BookList(generics.ListAPIView):
     queryset = Book.objects.all()
@@ -10,3 +12,6 @@ class BookList(generics.ListAPIView):
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+LoginAPIView = obtain_auth_token
