@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-iqsqxi1hb@ut#hzwr26ac3b*!z_o++%30s5+=+0s-ojjkn1@7$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1', 
-    'localhost',
+    # '127.0.0.1', 
+    # 'localhost',
 ]
 
 
@@ -65,7 +65,7 @@ SECURE_SSL_REDIRECT = True
 SECURE_HSTS_SECONDS =  31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-X_FRAME_OPTIONS = "Deny"
+X_FRAME_OPTIONS = 'Deny'
 SECURE_PROXY_SSL_HEADER = True
 HTTP_X_FORWARDED_PROTO = True
 #CSP Implementation
