@@ -23,7 +23,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password')
 
         # This automatically hashes password + handles custom user correctly
-        user = User.objects.create_user(
+        user = get_user_model().objects.create_user(
             password=password,
             **validated_data
         )
