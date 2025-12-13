@@ -3,6 +3,10 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from .models import CustomUser
 from django.contrib.auth import get_user_model
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -41,3 +45,35 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid credentials")
         data['user'] = user
         return data
+    
+class FollowUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+
+        if target_user == request.user:
+            return Response(
+                {"error": "You cannot follow yourself"},
+                status=400
+            )
+
+        # YOU follow THEM → YOU are added to THEIR followers
+        target_user.followers.add(request.user)
+
+        return Response(
+            {"message": f"You are now following {target_user.username}"}
+        )
+
+
+class UnfollowUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+
+        target_user.followers.remove(request.user)
+
+        return Response(
+            {"message": f"You unfollowed {target_user.username}"}
+        )
