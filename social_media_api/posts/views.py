@@ -25,16 +25,19 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-class FeedAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+class FeedAPIView(generics.GenericAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Users I follow
-        following_users = request.user.following.all()
+        user = request.user
+
+        # users that the current user follows
+        following_users = user.following.all()
 
         posts = Post.objects.filter(
             author__in=following_users
         ).order_by('-created_at')
 
-        serializer = PostSerializer(posts, many=True)
+        serializer = self.get_serializer(posts, many=True)
         return Response(serializer.data)
